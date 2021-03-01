@@ -1,5 +1,5 @@
 const express = require('express');
-const { StudetModel, validStudent } = require("../models/toyModel")
+const {ToyModel,validToy } = require("../models/toyModel")
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -60,15 +60,15 @@ router.get('/subject/:subName', async (req, res) => {
 
 router.post("/add", async (req, res) => {
 
-  let validBody = validStudent(req.body);
+  let validBody = validToy(req.body);
   if (validBody.error) {
     return res.status(400).json(validBody.error.details);
   }
   
   try{
 
-    let student = new ToyModel(req.body);
-    await student.save();
+    let toy = new ToyModel(req.body);
+    await toy.save();
     res.status(201).json(toy);
 
   }

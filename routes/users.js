@@ -1,5 +1,5 @@
 const express = require('express');
-const {UserModel,validUser,validLogin}=require("../models/userModels");
+const {UserModel,validUser,validLogin, genToken}=require("../models/userModels");
 const router = express.Router();
 const bcrypt = require('bcrypt');
 const{auth} = require("../middleware/auth");
@@ -42,7 +42,7 @@ router.post('/login', async(req, res) => {
     return res.status(400).json(validate.error.details)
   }
   try {
-   let user= await UserModel.findOne({email:req.userData.email});
+   let user= await UserModel.findOne({email:req.body.email});
     if(!user){
         return res.status(400).json({msg:"user or password invalid 1"});
     }
@@ -54,16 +54,13 @@ router.post('/login', async(req, res) => {
     let myToken = genToken(user._id);
     res.json({token:myToken});
   }
-
-  
-  
   catch(err){
     console.log(err);
     res.status(400).json({err:"there is a problem, try again later!"})
   }
 })
 
-router.post('/signUp', async(req, res) => {
+router.post('/', async(req, res) => {
     let validate=validUser(req.body);
     if (validate.error){
       return res.status(400).json(validate.error.details)

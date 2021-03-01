@@ -1,5 +1,7 @@
 const mongoose=require("mongoose");
 const Joi=require("joi");
+const jwt = require("jsonwebtoken");
+const{config} = require("../config/secretData")
 
 const userSchema= new mongoose.Schema({
  name:String,
@@ -13,7 +15,12 @@ const userSchema= new mongoose.Schema({
  }
 })
 
-exports.UserModel=mongoose.model("users",userSchema); 
+exports.UserModel=mongoose.model("users",userSchema);
+
+exports.genToken = (_id) => {
+  let token = jwt.sign({_id},config.jwtSecret,{expiresIn:"60mins"});
+  return token;
+}
 
 exports.validUser= (_userBody) => {
  let JoiSchema = Joi.object({

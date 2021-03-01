@@ -1,5 +1,6 @@
 const indexRoter= require("./index");
 const usersRoter= require("./users");
+const toysRoter= require("./toys");
 
 
 exports.corsAccessControl = (app) => {
@@ -16,6 +17,7 @@ exports.corsAccessControl = (app) => {
 exports.routesInit = (app) => {
  app.use("/", indexRoter);
  app.use("/users", usersRoter);
+ app.use("/toys", toysRoter);
 
 
  
